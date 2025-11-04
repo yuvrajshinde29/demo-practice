@@ -4,6 +4,6 @@ const upload = require("../config/multerFileStorageConfig");
 const multerRouter = express();
 
 
-multerRouter.route('/').post( upload.single("fileName"),uploadFile)
+multerRouter.route('/').post( upload.single("fileName"),uploadFile);
 
 module.exports = multerRouter
