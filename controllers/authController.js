@@ -61,7 +61,7 @@ exports.forgotPassword = async (req, res) => {
     // reset url
     const resetUrl = process.env.CLIENT_URL + "/" + resetToken;
 
-    let PreviewURL = await sendEmail(resetUrl);
+    let PreviewURL = await sendEmail(resetUrl,user.email);
     res
       .status(200)
       .json({ message: "password reset link sent to your email", PreviewURL });
