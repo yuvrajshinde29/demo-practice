@@ -9,7 +9,7 @@ const {
 const sendEmail = require("../config/nodemailer");
 const { Op } = require("sequelize");
 
-// user signIn :/auth/signup
+// user signup :/auth/signup
 exports.createUser = async (req, res) => {
   try {
     let { value, error } = validateUserSchema(req.body);
@@ -61,7 +61,7 @@ exports.forgotPassword = async (req, res) => {
     // reset url
     const resetUrl = process.env.CLIENT_URL + "/" + resetToken;
 
-    let PreviewURL = await sendEmail(resetUrl,user.email);
+    let PreviewURL = await sendEmail(resetUrl, user.email);
     res
       .status(200)
       .json({ message: "password reset link sent to your email", PreviewURL });
@@ -96,6 +96,7 @@ exports.resetPassword = async (req, res) => {
     user.resetToken = undefined;
     user.resetTokenExpire = undefined;
     await user.save();
+    //redirect to login page
     res.status(200).json({ message: "password reset done" });
   } catch (error) {
     console.log(error.message);
@@ -104,7 +105,7 @@ exports.resetPassword = async (req, res) => {
 };
 
 //signin /auth/signin
-exports.signin = async (req, res) => {
+/* exports.signin = async (req, res) => {
   try {
     let { value, error } = validateSignin(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
@@ -122,34 +123,16 @@ exports.signin = async (req, res) => {
     console.log(error.message);
     res.status(500).json({ error: error.message });
   }
+}; */
+
+exports.logOut = (req, res) => {
+  /* req.session.destroy((err) => {
+    if (err) res.status(401).json({ error: "unable to distroy session" });
+    res.clearCookie("connect.sid");
+    return res.json({ message: "logout success" });
+  }); */
+
+  req.logOut(() => {
+    res.json({ message: "logged out successfully" });
+  });
 };
-//==============================
-// exports.userLogin = async (req, res) => {
-//   const { email, password } = req.body;
-//   if (!User[0].email === email)
-//     return res.status(401).json({ error: "Invalid user" });
-
-//   if (!password === User[0].password)
-//     return res.status(400).json({ error: "Invalid password" });
-//   //-----------------------
-
-//   req.session.user = User[0];
-
-//   res.status(200).json({ msg: "login success", user: req.session.user });
-// };
-
-// exports.getUser = async (req, res) => {
-//   const user = req.session.user;
-//   console.log(user);
-//   res.status(200).json({ msg: "user info", user });
-// };
-
-// exports.logOut = (req, res) => {
-//   req.session.destroy((err) => {
-//     if (err) res.status(401).json({ error: "unable to distroy session" });
-
-//     res.clearCookie("connect.sid");
-
-//     return res.json({ message: "logout success" });
-//   });
-// };

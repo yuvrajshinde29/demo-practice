@@ -23,8 +23,9 @@ async function sendEmail(resetPasswordUrl, toUser) {
 
   //2. define email content
   const mailOptions = {
-    from: `"Demo Nodemailer" <${testAccount.user}>`,
+    from: [`"Demo Nodemailer" <${testAccount.user}>`],
     to: toUser,
+    // cc:[{name:"name",address:"cc@gmail.com"}],
     subject: "testing nodemailer",
     text: `Hello,
     Click this link to reset password, 

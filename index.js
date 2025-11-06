@@ -5,6 +5,12 @@ const session = require("express-session");
 const authRouter = require("./routes/authRoute");
 const multerRouter = require("./routes/multerRoute");
 const sequelize = require("./config/dbConfig");
+const ConfigurePassport = require("./config/passport");
+const passport = require("passport");
+const userRouter = require("./routes/userRoutes");
+const authMiddleware = require("./config/authMiddleware");
+
+// const passport = require("passport");
 
 const app = express();
 app.use(express.urlencoded());
@@ -13,7 +19,7 @@ app.use(express.json());
 //-------session middleware---------
 app.use(
   session({
-    secret: process.env.SECRET || "secretKey",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -21,11 +27,21 @@ app.use(
     },
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.session());
+ConfigurePassport(passport);
+
 async function createServer() {
   await sequelize.sync();
 
   app.use("/", multerRouter);
   app.use("/auth", authRouter);
+  app.use(
+    "/user",
+    authMiddleware,
+    userRouter
+  );
 
   app.listen(3000, () => {
     console.log("server started...");
