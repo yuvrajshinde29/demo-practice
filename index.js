@@ -5,10 +5,9 @@ const session = require("express-session");
 const authRouter = require("./routes/authRoute");
 const multerRouter = require("./routes/multerRoute");
 const sequelize = require("./config/dbConfig");
-const ConfigurePassport = require("./config/passport");
-const passport = require("passport");
 const userRouter = require("./routes/userRoutes");
 const authMiddleware = require("./config/authMiddleware");
+const passport = require("./config/passport");
 
 // const passport = require("passport");
 
@@ -17,20 +16,20 @@ app.use(express.urlencoded());
 app.use(express.json());
 
 //-------session middleware---------
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 5,
-    },
-  })
-);
+// app.use(
+//   session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//       maxAge: 1000 * 60 * 5,
+//     },
+//   })
+// );
 
 app.use(passport.initialize());
-app.use(passport.session());
-ConfigurePassport(passport);
+// app.use(passport.session());
+
 
 async function createServer() {
   await sequelize.sync();

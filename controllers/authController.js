@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const {
   validateUserSchema,
   validateUserPassword,
@@ -105,25 +106,29 @@ exports.resetPassword = async (req, res) => {
 };
 
 //signin /auth/signin
-/* exports.signin = async (req, res) => {
+exports.signin = async (req, res) => {
   try {
-    let { value, error } = validateSignin(req.body);
+    /* let { value, error } = validateSignin(req.body);
     if (error) return res.status(400).json({ error: error.details[0].message });
-
     let user = await User.findOne({ where: { email: value.email } });
+    console.log(user);
     if (!user)
       return res.status(404).json({ error: "Invalid user! first signup " });
-
     let isValidUser = await bcrypt.compare(value.password, user.password);
-
     if (!isValidUser) return res.status(401).json({ error: "wrong password" });
-
-    res.status(200).json({ message: "signin successful" });
+ */
+    //------------------sign in jwt token-----------------------------------
+    const { id } = req.user;
+    const jwt_payload = { sub: id };
+    const token = jwt.sign(jwt_payload, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
+    res.status(200).json({ message: "signin successful", token });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: error.message });
   }
-}; */
+};
 
 exports.logOut = (req, res) => {
   /* req.session.destroy((err) => {

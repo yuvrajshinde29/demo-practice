@@ -4,8 +4,9 @@ const {
   createUser,
   forgotPassword,
   resetPassword,
+  signin,
 } = require("../controllers/authController");
-const passport = require("passport");
+const passport = require("../config/passport");
 const authMiddleware = require("../config/authMiddleware");
 const { showProfile } = require("../controllers/userController");
 const authRouter = express();
@@ -14,9 +15,11 @@ authRouter.route("/signup").post(createUser);
 // authRouter.route("/signin").post(signin)
 authRouter.route("/signin").post(
   passport.authenticate("local", {
-    successRedirect: "/user",
+    session:false,
+    // successRedirect: "/user",
     failureRedirect: "/",
-  })
+  }),
+  signin
 );
 // authRouter.route("/signin").post(passport.authenticate("local"), showProfile);
 authRouter.route("/forgot-password").post(forgotPassword);
