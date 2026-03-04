@@ -11,19 +11,19 @@ const authMiddleware = require("../config/authMiddleware");
 const { showProfile } = require("../controllers/userController");
 const authRouter = express();
 
-authRouter.route("/signup").post(createUser);
+authRouter.post("/signup", createUser);
 // authRouter.route("/signin").post(signin)
-authRouter.route("/signin").post(
+authRouter.post(
+  "/signin",
   passport.authenticate("local", {
-    session:false,
+    session: false,
     // successRedirect: "/user",
     failureRedirect: "/",
   }),
-  signin
+  signin,
 );
-// authRouter.route("/signin").post(passport.authenticate("local"), showProfile);
-authRouter.route("/forgot-password").post(forgotPassword);
-authRouter.route("/forgot-password/:token").patch(resetPassword);
-authRouter.route("/logout").get(authMiddleware, logOut);
+authRouter.post("/forgot-password", forgotPassword);
+authRouter.patch("/forgot-password/:token", resetPassword);
+authRouter.get("/logout", authMiddleware, logOut);
 
 module.exports = authRouter;

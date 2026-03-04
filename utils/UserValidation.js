@@ -8,6 +8,7 @@ function validateUserSchema(res) {
   });
   return schemaObject.validate(res);
 }
+
 function validateSignin(res) {
   const schemaObject = Joi.object({
     email: Joi.string().email(),
@@ -15,12 +16,14 @@ function validateSignin(res) {
   });
   return schemaObject.validate(res);
 }
+
 function validateUserEmail(res) {
   const schemaObject = Joi.object({
     email: Joi.string().email(),
   });
   return schemaObject.validate(res);
 }
+
 function validateUserPassword(res) {
   const schemaObject = Joi.object({
     password: Joi.string().required(),
@@ -28,5 +31,9 @@ function validateUserPassword(res) {
   return schemaObject.validate(res);
 }
 
-module.exports= {validateUserSchema,validateUserEmail,validateUserPassword,validateSignin}
-
+module.exports = {
+  validateUserSchema,
+  validateUserEmail,
+  validateUserPassword,
+  validateSignin,
+};

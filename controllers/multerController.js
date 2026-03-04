@@ -1,5 +1,10 @@
 exports.uploadFile = (req, res) => {
-  //fileName - must be same as input field name of UI form
-  console.log("=", req.file); //file info
-  res.json(req.file);
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    res.status(200).json({ message: "File uploaded successfully", file: req.file });
+  } catch (error) {
+    res.status(500).json({ message: "Error uploading file", error: error.message });
+  }
 };

@@ -3,9 +3,6 @@ const { uploadFile } = require("../controllers/multerController");
 const upload = require("../config/multerFileStorageConfig");
 const multerRouter = express();
 
-multerRouter.route("/").get((req, res) => {
-  res.send("home, need to login first");
-});
-multerRouter.route("/upload").post(upload.single("fileName"), uploadFile);
+multerRouter.post("/upload", upload.single("fileName"), uploadFile);
 
 module.exports = multerRouter;
